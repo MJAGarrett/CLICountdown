@@ -5,13 +5,10 @@
 #include "OperationContext.h"
 #include "RoundAnswer.h"
 #include "MGHelperFunctions.h"
+#include "ClosestNumContext.h"
 
 #ifndef NUMBERFINDER
 #define NUMBERFINDER
-
-// TODO: Account for the possibility of two potential closest answers either side of target.
-// EG. If target is 150 and two possible answers are 149 and 151. May need to convert stepsToClosest into a vector storing
-// the answer itself and the steps to reach it.
 
 class NumberFinder
 {
@@ -19,19 +16,21 @@ class NumberFinder
   int target;
   bool found = false;
   std::vector<std::string> tempSteps;
-  int closestNum = INT_MIN;
-  std::vector<std::string> stepsToClosest;
-  std::vector<std::string> answerSteps;
+  std::pair<ClosestNumContext, ClosestNumContext> closestNums = { ClosestNumContext(INT_MIN), ClosestNumContext(INT_MAX) };
 
   bool isResultClosestToTarget(const int &result) const
   {
-    if (closestNum == INT_MIN) return true;
-
-    int resultDistance = abs(this->target - result);
-    int currentClosest = abs(this->target - this->closestNum);
-
-    if (resultDistance < currentClosest) return true;
-    return false;
+      if (result > this->target)
+      {
+          if (result < closestNums.second.num)
+              return true;
+      }
+      else 
+      {
+          if (result > closestNums.first.num)
+              return true;
+      }
+      return false;
   }
 
   void printHistory(const std::vector<std::string> &history)
@@ -255,7 +254,8 @@ class NumberFinder
     if (result == this->target)
     {
       this->tempSteps.push_back(step);
-      this->answerSteps = MG::copyVector(this->tempSteps);
+      this->closestNums.first = ClosestNumContext(result, this->tempSteps);
+      this->closestNums.second = ClosestNumContext(result, this->tempSteps);
       this->found = true;
       return 0;
     }
@@ -266,8 +266,16 @@ class NumberFinder
 
       if (this->isResultClosestToTarget(result))
       {
-        this->closestNum = result;
-        this->stepsToClosest = MG::copyVector(this->tempSteps);
+          if (result > this->target) 
+          {
+              this->closestNums.second.num = result;
+              this->closestNums.second.stepsToNum = MG::copyVector(this->tempSteps);
+          }
+          else
+          {
+              this->closestNums.first.num = result;
+              this->closestNums.first.stepsToNum = MG::copyVector(this->tempSteps);
+          }
       }
       return 2;
     }
@@ -276,8 +284,6 @@ class NumberFinder
   void clearSteps()
   {
     this->tempSteps.clear();
-    this->answerSteps.clear();
-    this->stepsToClosest.clear();
   }
 public:
   NumberFinder(int target, std::vector<int> nums) 
@@ -290,14 +296,7 @@ public:
   {
     MathRoundAnswer* answer;
     this->find(this->nums);
-    if (!this->found)
-    {
-      answer = new MathRoundAnswer(this->target, this->closestNum, this->stepsToClosest);
-    }
-    else 
-    {
-      answer = new MathRoundAnswer(this->target, this->target, this->answerSteps);
-    }
+    answer = new MathRoundAnswer(this->target, this->closestNums);
     this->clearSteps();
     return answer;
   }

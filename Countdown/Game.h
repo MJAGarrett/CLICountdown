@@ -13,13 +13,13 @@ class Game
 {
 	int score = 0;
 	Round* currentRound;
-	MathRound* mathRound;
-	LettersRound* lettersRound;
+	MathRound mathRound;
+	LettersRound lettersRound;
 	int numberOfRoundsEach = 2;
 
 	void switchRound()
 	{
-		currentRound == mathRound ? currentRound = lettersRound : currentRound = mathRound;
+		currentRound == &mathRound ? currentRound = &lettersRound : currentRound = &mathRound;
 	}
 
 	void printScore()
@@ -35,20 +35,18 @@ class Game
 		this->score += roundScore;
 	}
 
+	void conundrum()
+	{
+		std::cout << "Conundrum awaiting implementation." << std::endl;
+	}
+
 public:
 	Game()
 	{
-		this->mathRound = new MathRound();
-		this->lettersRound = new LettersRound();
-		this->currentRound = this->lettersRound;
+		this->mathRound = MathRound();
+		this->lettersRound = LettersRound();
+		this->currentRound = &(this->lettersRound);
 	};
-
-	~Game()
-	{
-		this->currentRound = nullptr;
-		delete this->mathRound;
-		delete this->lettersRound;
-	}
 
 	void playGame()
 	{
@@ -59,6 +57,8 @@ public:
 			this->playCurrentRound();
 			this->switchRound();
 		}
+
+		this->conundrum();
 
 		this->printScore();
 	}

@@ -130,6 +130,7 @@
     <ClCompile Include="Countdown.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClosestNumContext.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="LettersRound.h" />
     <ClInclude Include="MathInputReader.h" />

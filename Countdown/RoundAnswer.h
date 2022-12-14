@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "ClosestNumContext.h"
 
 #pragma once
 
@@ -12,9 +13,13 @@ public:
 
 class MathRoundAnswer : RoundAnswer
 {
+  const bool targetReachable;
   const int target;
-  const int numReached;
-  const std::vector<std::string> steps;
+  std::pair<ClosestNumContext, ClosestNumContext> closestNums;
+  // closerOfTheTwo should remain a nullptr if both closest nums are the same distance away from the target.
+  ClosestNumContext* closerOfTheTwo = nullptr;
+  int closestDistanceToTarget;
+
   void printHistory(const std::vector<std::string> &history) const
   {
     size_t size = history.size();
@@ -29,33 +34,77 @@ class MathRoundAnswer : RoundAnswer
 
     std::cout << "\tFinally: " << history[history.size() - 1] << std::endl;
   }
+
+  std::string getClosestNumsString() const
+  {
+      if (closerOfTheTwo == nullptr)
+      {
+          return std::to_string(this->closestNums.first.num) + " or " + std::to_string(this->closestNums.second.num);
+      }
+      else
+      {
+          return std::to_string(this->closerOfTheTwo->num);
+      }
+  }
 public:
-  MathRoundAnswer(int target, int numReached, std::vector<std::string> steps) : target(target), numReached(numReached), steps(steps) {}
+  MathRoundAnswer(int target, std::pair<ClosestNumContext, ClosestNumContext> closestNums) 
+      : target(target), closestNums(closestNums), targetReachable(target == closestNums.first.num || target == closestNums.second.num) 
+  {
+      const int lowerDistance = abs(this->target - this->closestNums.first.num);
+      const int upperDistance = abs(this->target - this->closestNums.second.num);
+
+      if (lowerDistance == upperDistance) 
+      {
+          this->closestDistanceToTarget = lowerDistance;
+      }
+      else if (lowerDistance > upperDistance) 
+      {
+          this->closerOfTheTwo = &this->closestNums.second;
+          this->closestDistanceToTarget = upperDistance;
+      }
+      else 
+      {
+          this->closerOfTheTwo = &this->closestNums.first;
+          this->closestDistanceToTarget = lowerDistance;
+      }
+  }
+
   void printAnswer() const
   {
-    if (!(this->target == this->numReached))
+    if (!targetReachable)
     {
       std::cout << "It is not possible to get " << std::to_string(this->target) << " with the given numbers." << std::endl;
-      std::cout << "The closest one can get to " << std::to_string(this->target) << " is " << std::to_string(this->numReached) << "." << std::endl;
-      std::cout << "One way to get to " << std::to_string(this->numReached) + " is:" << std::endl;
-      this->printHistory(this->steps);
+      std::cout << "The closest one can get to " << std::to_string(this->target) << " is " << this->getClosestNumsString() << "." << std::endl;
+      if (this->closerOfTheTwo != nullptr)
+      {
+          std::cout << "One way to get to " << std::to_string(this->closerOfTheTwo->num) + " is:" << std::endl;
+          this->printHistory(this->closerOfTheTwo->stepsToNum);
+      }
+      else
+      {
+          std::cout << "One way to get to " << std::to_string(this->closestNums.first.num) << ", for example, is: " << std::endl;
+          this->printHistory(this->closestNums.first.stepsToNum);
+          std::cout << "\nOne way to get to " << std::to_string(this->closestNums.second.num) << " is: " << std::endl;
+          this->printHistory(this->closestNums.second.stepsToNum);
+      }
+      
     }
     else
     {
       std::cout << "It is possible to get " << std::to_string(this->target) << " with the given numbers." << std::endl;
       std::cout << "One way to get to get it is: " << std::endl;
-      this->printHistory(this->steps);
+      this->printHistory(this->closestNums.first.stepsToNum);
     }
   }
 
-  int getAnswer()
+  int getClosestDistance() const
   {
-    return numReached;
+    return this->closestDistanceToTarget;
   }
 
-  bool isPossible()
+  bool isPossible() const
   {
-    return this->target == this->numReached;
+    return this->targetReachable;
   }
 };
 

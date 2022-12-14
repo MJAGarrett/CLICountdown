@@ -71,7 +71,15 @@ class MathRound : public Round
 
   void getRandomTarget()
   {
-    this->target = this->targetDistribution(randomGen);
+      while (this->target == 0)
+      {
+          int potentialTarget = this->targetDistribution(randomGen);
+          // Rerolls if potential target is 100 to avoid the fringe situation where a player could also get a 100 and win immediately.
+          if (potentialTarget == 100 && std::any_of(this->gameNums.begin(), this->gameNums.end(), [](int val) { return val == 100; })) continue;
+          this->target = potentialTarget;
+      }
+      
+    
   }
 
   void reinitializeNumChoices()
@@ -176,7 +184,7 @@ public:
 
     if (this->answer->isPossible()) this->answer->printAnswer();
 
-    else if (playerAnswer == this->answer->getAnswer())
+    else if (abs(this->target - playerAnswer) == this->answer->getClosestDistance())
     {
       std::cout << "Your answer is the closest one can get to " << std::to_string(this->target) << " with the given numbers." << std::endl;
     }
@@ -223,17 +231,20 @@ public:
     this->gameNums.clear();
     this->finderHasFinished = false;
     this->playerAnswer = INT_MIN;
+    this->target = 0;
     delete answer;
     delete finder;
   }
 
   int getPlayerScore() 
   {
-      // Getting answer from the answer object to ensure accurate scoring when target is not able to be reached.
-      int bestAnswer = this->answer->getAnswer();
-      // If score is guaranteed to be at least 10 points away from any target, just return 0.
-      if (this->playerAnswer <= 90 || this->playerAnswer >= 1009) return 0;
-      const int distance = abs(bestAnswer - this->playerAnswer);
+      // Getting best distance from the answer object to ensure accurate scoring when target is not able to be reached.
+      int bestAnswerDistance = this->answer->getClosestDistance();
+      // If score is guaranteed to be more than 10 points away from any target, just return 0.
+      if (this->playerAnswer < 90 || this->playerAnswer > 1009) return 0;
+      const int playersDistance = abs(this->target - this->playerAnswer);
+
+      const int distance = abs(bestAnswerDistance - playersDistance);
       if (distance == 0) return 10;
       else if (distance >= 1 && distance <= 5) return 7;
       else if (distance >= 5 && distance <= 10) return 5;
