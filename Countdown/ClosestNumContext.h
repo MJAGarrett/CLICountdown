@@ -5,8 +5,8 @@
 
 struct ClosestNumContext
 {
-    int num;
-    std::vector<std::string> stepsToNum = {};
-    ClosestNumContext(int num) : num(num) {};
-    ClosestNumContext(int num, std::vector<std::string> steps) : num(num), stepsToNum(steps) {};
+	int num;
+	std::vector<std::string> stepsToNum = {};
+	ClosestNumContext(int num) : num(num) {};
+	ClosestNumContext(int num, std::vector<std::string> steps) : num(num), stepsToNum(steps) {};
 };

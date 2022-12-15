@@ -12,16 +12,16 @@
 /* Functions and variables for manual testing begin here */
 std::vector<int> bigNums = { 100, 75, 50, 25 };
 std::vector<int> smallNums = {
-  1, 1,
-  2, 2,
-  3, 3,
-  4, 4,
-  5, 5,
-  6, 6,
-  7, 7,
-  8, 8,
-  9, 9,
-  10, 10,
+	1, 1,
+	2, 2,
+	3, 3,
+	4, 4,
+	5, 5,
+	6, 6,
+	7, 7,
+	8, 8,
+	9, 9,
+	10, 10,
 };
 
 std::random_device rd;
@@ -77,16 +77,16 @@ void refreshNums()
 {
 	bigNums = { 100, 75, 50, 25 };
 	smallNums = {
-	  1, 1,
-	  2, 2,
-	  3, 3,
-	  4, 4,
-	  5, 5,
-	  6, 6,
-	  7, 7,
-	  8, 8,
-	  9, 9,
-	  10, 10,
+		1, 1,
+		2, 2,
+		3, 3,
+		4, 4,
+		5, 5,
+		6, 6,
+		7, 7,
+		8, 8,
+		9, 9,
+		10, 10,
 	};
 }
 
