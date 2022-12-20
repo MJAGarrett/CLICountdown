@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Dictionary.test.cpp">
+      <Filter>Tests\LettersRoundTests</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{18782f3c-c214-45bd-8bf8-302a1c50c3d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\LettersRoundTests">
+      <UniqueIdentifier>{15515413-8571-4a6a-bba1-575daeb4c054}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\SharedTests">
+      <UniqueIdentifier>{31267109-2d09-44c5-93c7-d43100f9aaf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\NumbersRoundTests">
+      <UniqueIdentifier>{9969dd9a-92a9-4320-bd53-5710a4db38d0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>

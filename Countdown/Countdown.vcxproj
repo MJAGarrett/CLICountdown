@@ -131,7 +131,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClosestNumContext.h" />
+    <ClInclude Include="Dictionary.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="LettersInputReader.h" />
     <ClInclude Include="LettersRound.h" />
     <ClInclude Include="MathInputReader.h" />
     <ClInclude Include="MathRound.h" />
@@ -140,6 +142,12 @@
     <ClInclude Include="OperationContext.h" />
     <ClInclude Include="Round.h" />
     <ClInclude Include="RoundAnswer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Words.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

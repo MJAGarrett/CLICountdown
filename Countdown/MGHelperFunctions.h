@@ -1,10 +1,10 @@
 #include <vector>
-
+#include <unordered_map>
+#include <set>
 #pragma once
 
-class MG
+namespace MG
 {
-public:
 	/**
 	 * @brief Gets the next int vector for processing
 	 *
@@ -14,7 +14,7 @@ public:
 	 * @param result
 	 * @return std::vector<int>
 	 */
-	static std::vector<int> getNextIteration(const std::vector<int>& current, const int firstNum, const int otherNum, const int result)
+	std::vector<int> getNextIteration(const std::vector<int>& current, const int firstNum, const int otherNum, const int result)
 	{
 		std::vector<int> next;
 		next.push_back(result);
@@ -67,8 +67,26 @@ public:
 		return next;
 	}
 
+	template<class T>
+	std::vector<T> removeElementFromVector(const std::vector<T>& vector, T valToRemove)
+	{
+		bool removedVal = false;
+		std::vector<T> copyVector;
+
+		for (T valToCopy : vector)
+		{
+			if (valToCopy == valToRemove && !removedVal)
+			{
+				removedVal = true;
+				continue;
+			}
+			copyVector.push_back(valToCopy);
+		}
+		return copyVector;
+	}
+
 	template<class t>
-	static std::vector<t> copyVector(const std::vector<t>& initial)
+	std::vector<t> copyVector(const std::vector<t>& initial)
 	{
 		std::vector<t> copy;
 		for (const t val : initial)
@@ -79,7 +97,7 @@ public:
 		return copy;
 	}
 
-	static int getClosest(const int& target, const int& first, const int& second)
+	int getClosest(const int& target, const int& first, const int& second)
 	{
 		if (first == second) return first;
 		if (first == INT_MIN) return second;
@@ -93,7 +111,7 @@ public:
 	}
 
 	template<class T>
-	static bool vectorContainsBoth(const std::vector<T>& vec, const T& arg1, const T& arg2)
+	bool vectorContainsBoth(const std::vector<T>& vec, const T& arg1, const T& arg2)
 	{
 		if (arg1 == arg2)
 		{

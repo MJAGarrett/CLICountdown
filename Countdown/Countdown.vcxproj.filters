@@ -59,5 +59,19 @@
     <ClInclude Include="MGHelperFunctions.h">
       <Filter>Header Files\Shared</Filter>
     </ClInclude>
+    <ClInclude Include="LettersInputReader.h">
+      <Filter>Header Files\LettersRound</Filter>
+    </ClInclude>
+    <ClInclude Include="Dictionary.h">
+      <Filter>Header Files\LettersRound</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Words.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md" />
   </ItemGroup>
 </Project>
